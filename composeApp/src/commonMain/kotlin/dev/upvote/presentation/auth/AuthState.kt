@@ -7,5 +7,5 @@ data class AuthState(
     val token: Token?,
     val lastErrorStr: String? = null
 ) {
-    fun isLoggedIn(): Boolean = token != null
+    fun isLoggedIn() = token != null
 }

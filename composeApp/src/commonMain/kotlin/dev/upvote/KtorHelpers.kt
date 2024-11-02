@@ -7,6 +7,10 @@ import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.DEFAULT
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 
 import kotlinx.serialization.json.Json
@@ -22,14 +26,19 @@ val bearerTokenStorage = mutableListOf<BearerTokens>()
 val httpClient: HttpClient = HttpClient {
     install(ContentNegotiation) {
         json(Json {
-            encodeDefaults = true
-            isLenient = true
             allowSpecialFloatingPointValues = true
             allowStructuredMapKeys = true
+            encodeDefaults = false
+            explicitNulls = false
+            ignoreUnknownKeys = true
+            isLenient = true
             prettyPrint = false
             useArrayPolymorphism = false
-            ignoreUnknownKeys = true
         })
+    }
+    install(Logging) {
+        logger = Logger.DEFAULT
+        level = LogLevel.ALL
     }
     install(Auth) {
         bearer {

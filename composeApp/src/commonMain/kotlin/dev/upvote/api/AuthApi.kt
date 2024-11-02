@@ -21,7 +21,7 @@ class AuthApi(private val httpClient: HttpClient) {
         println("postToken")
         val response: HttpResponse = httpClient.post("$BASE_URL/api/token") {
             headers {
-                append(HttpHeaders.Accept, "application/json")
+                append(HttpHeaders.Accept, ContentType.Application.Json.toString())
             }
             contentType(ContentType.Application.Json)
             setBody(credentials)

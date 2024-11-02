@@ -47,7 +47,7 @@ import dev.upvote.presentation.leaderboard.LeaderboardContent
 import dev.upvote.GlobalState
 import dev.upvote.IUpvote
 import dev.upvote.presentation.notifications.NotificationContent
-import dev.upvote.presentation.profile.ProfileContent
+import dev.upvote.presentation.profile.ProfileScreen
 import dev.upvote.resources.Res
 import dev.upvote.resources.barcode_scanner_24px
 import dev.upvote.resources.emoji_events_24px
@@ -161,7 +161,7 @@ fun RootBottomScreen(
                 ) {
                     when (val child = it.instance) {
                         is RootBottomComponent.ChildBottom.ProfileChild ->
-                            ProfileContent(
+                            ProfileScreen(
                                 component = child.component
                             )
 

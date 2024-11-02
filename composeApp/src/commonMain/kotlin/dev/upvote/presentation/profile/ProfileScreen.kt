@@ -17,21 +17,26 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-import dev.upvote.api.first_party.Profile
+import dev.upvote.api.first_party.ProfileOptional
+import dev.upvote.globalGlobalState
 
 @Composable
-fun ProfileContent(
+fun ProfileScreen(
     component: ProfileComponent,
     viewModel: ProfileContentViewModel = viewModel { ProfileContentViewModel() },
     modifier: Modifier = Modifier
 ) {
+    viewModel.getProfile()
+    val uiState by viewModel.uiState.collectAsState()
     Scaffold(
         modifier = modifier.fillMaxSize()
     ) {
@@ -41,15 +46,23 @@ fun ProfileContent(
                 modifier = Modifier.size(128.dp),
                 contentDescription = "Profile photo"
             )
-            Text("My name here", fontSize = 35.sp)
+            Text(
+                uiState.profile?.alias ?: "Alias",
+                style = MaterialTheme.typography.headlineMedium
+            )
             Button(
                 onClick = {
                     println("updateProfile clicked")
-                    viewModel.updateProfile(Profile(role = "foo"))
+                    viewModel.updateProfile(
+                        ProfileOptional(
+                            username = globalGlobalState.value.token!!.getUsername(),
+                            alias = "foo"
+                        )
+                    )
                 },
                 modifier = modifier.fillMaxWidth().padding(),
             ) {
-                Text("Update profile")
+                Text("Update profile [change alias to `foo`]")
             }
             LinearProgressIndicator(
                 progress = { 33F },
@@ -72,7 +85,10 @@ fun ProfileContent(
                     .padding()
             )
             Spacer(Modifier.fillMaxSize(0.2F))
-            Button(onClick = { println("[contrib] clicked") }, modifier = Modifier.fillMaxWidth()) {
+            Button(
+                onClick = { println("[contrib] clicked") },
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text("Contribute more")
             }
 

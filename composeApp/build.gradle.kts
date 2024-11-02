@@ -11,13 +11,8 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinSerialization)
-    // alias(libs.plugins.kotlinCocoapods)
-    // alias(libs.plugins.kotlinxSerialization)
-    // alias(libs.plugins.sqldelight)
-    // kotlin("multiplatform")
-    // kotlin("plugin.serialization") version "2.0.20"
-    id("com.google.devtools.ksp") version "2.0.20-1.0.25"
-    id("com.rickclephas.kmp.nativecoroutines") version "1.0.0-ALPHA-36"
+    id("com.google.devtools.ksp") version "2.0.21-1.0.26"
+    id("com.rickclephas.kmp.nativecoroutines") version "1.0.0-ALPHA-37"
 }
 
 kotlin {
@@ -96,18 +91,6 @@ kotlin {
         }
     }
 
-    /*iosArm64()
-    cocoapods {
-        iosArm64.deploymentTarget = "13.5"
-
-        summary = "CocoaPods test library"
-        homepage = "https://github.com/JetBrains/kotlin"
-
-        pod("FirebaseAuth") {
-            version = "10.16.0"
-        }
-    }*/
-
     sourceSets {
         val desktopMain by getting
 
@@ -118,16 +101,14 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-            implementation(libs.play.services.code.scanner)
-            // implementation(libs.android.driver)
-            implementation(libs.ktor.client.okhttp)
-            // implementation(libs.ktor.client.android)
+            implementation(libs.androidx.datastore.core.android)
             implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.play.services.code.scanner)
+            implementation(libs.multiplatform.settings.no.arg)
             runtimeOnly(libs.kotlin.reflect)
         }
         iosMain.dependencies {
-            // implementation(libs.ktor.client.darwin)
-            // implementation(libs.native.driver)
             implementation(libs.ktor.client.darwin)
             implementation(libs.lifecycle)
             runtimeOnly(libs.kotlin.reflect)
@@ -135,89 +116,48 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
-            // implementation(libs.ktor.client.java)
             implementation(libs.ktor.client.cio)
+            // implementation(libs.androidx.datastore)
+            // implementation(libs.androidx.datastore.core)
+            // implementation(libs.androidx.datastore.core.jvm)
+            implementation(libs.multiplatform.settings.no.arg)
+            implementation(libs.androidx.datastore.core.jvm)
             runtimeOnly(libs.kotlin.reflect)
         }
-        /*jsMain.dependencies {
-            // implementation(libs.ktor.client.js)
-            implementation(libs.ktor.client.cio)
-        }*/
         jsMain.dependencies {
             implementation(libs.ktor.client.js)
         }
         commonMain.dependencies {
-            implementation(compose.runtime)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.material3)
+            implementation(compose.runtime)
             implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            // implementation(libs.androidx.lifecycle.viewmodel)
-            // implementation(libs.androidx.lifecycle.runtime.compose)
-            // runtimeOnly(libs.androidx.runtime)
-            implementation(libs.coil.network.ktor3)
-            // implementation(libs.openfoodfacts.kotlin)
-            // implementation(libs.kotlinx.coroutines.core)
-            // implementation(libs.ktor.client.core)
-            // implementation(libs.ktor.client.content.negotiation)
-            // implementation(libs.ktor.serialization.kotlinx.json)
-            // implementation(libs.runtime)
-            // implementation(libs.kotlinx.datetime)
-            // implementation(libs.koin.core)
-            implementation(libs.ktor.client.core)
+
             implementation(libs.kotlinx.coroutines.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.client.logging)
+            implementation(libs.kotlinx.datetime)
+
             implementation(libs.ktor.client.auth)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.serialization.kotlinx.json)
+
+            implementation(libs.coil.network.ktor3)
             implementation(libs.coil3.coil.compose)
-            // implementation(libs.coil.network.ktor)
-            /*
-            implementation(libs.mvikotlin)
-            implementation(libs.mvikotlin.main)
-            implementation(libs.mvikotlin)
-            implementation(libs.mvikotlin.extensions.coroutines)
-            */
-            // implementation(libs.mvikotlin.logging)
-            // implementation(libs.mvikotlin.timetravel)
-            // implementation(libs.vikotlin.extensions.coroutines)
-            // api(libs.kmp.observableviewmodel.core)
 
             implementation(libs.decompose)
             implementation(libs.decompose.extensions.compose)
-            /*
-            implementation("org.jetbrains.compose.material3.adaptive:adaptive:1.0.0-alpha03")
-            implementation("org.jetbrains.compose.material3.adaptive:adaptive-layout:1.0.0-alpha03")
-            implementation("org.jetbrains.compose.material3.adaptive:adaptive-navigation:1.0.0-alpha03")
-            */
-            /*
-            implementation("androidx.activity:activity-compose:1.10.0-alpha02") // 1.9.2
-            implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.0-alpha04")
-            */
-            /*
-            implementation("androidx.lifecycle:lifecycle-viewmodel:2.9.0-alpha04")
-            */
-            // runtimeOnly(libs.androidx.lifecycle.viewmodel.compose)
-            implementation(libs.kotlinx.datetime)
-            // runtimeOnly(libs.lifecycle.viewmodel)
 
             implementation(libs.jetbrains.lifecycle.viewmodel)
             implementation(libs.lifecycle.viewmodel.compose)
 
-            /*implementation(libs.bom)
-            implementation(libs.postgrest_kt)
-            implementation(libs.auth_kt)
-            implementation(libs.realtime_kt)*/
-            /*
-            implementation(platform("io.github.jan-tennert.supabase:bom:3.0.1"))
-            implementation("io.github.jan-tennert.supabase:postgrest-kt")
-            implementation("io.github.jan-tennert.supabase:auth-kt")
-            implementation("io.github.jan-tennert.supabase:realtime-kt")
-            */
-            // implementation("io.github.agrevster:pocketbase-kotlin:2.6.3")
+            implementation(libs.multiplatform.settings)
+            implementation(libs.multiplatform.settings.coroutines)
+            implementation(libs.multiplatform.settings.datastore)
         }
     }
 }

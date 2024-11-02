@@ -10,14 +10,13 @@ androidx-constraintlayout = "2.1.4"
 androidx-core-ktx = "1.13.1"
 androidx-espresso-core = "3.6.1"
 androidx-jetbrains-lifecycle-viewmodel = "2.9.0-dev1890"
-androidx-lifecycle-viewmodel = "2.9.0-alpha05"
 androidx-material = "1.13.0-alpha07"
 androidx-material3 = "1.4.0-alpha02"
 androidx-test-junit = "1.2.1"
-# supabase-kt = "3.0.1"
 coilCompose = "3.0.0-rc01"
 compose-plugin = "1.8.0-dev1875"
 coroutines = "1.9.0"
+datastoreCoreJvm = "1.1.1"
 decompose = "3.2.0-beta02"
 kotlin = "2.0.20"
 kotlinReflect = "2.1.0-Beta2"
@@ -25,71 +24,50 @@ kotlinx-coroutines = "1.9.0"
 kotlinxDatetime = "0.6.1"
 ktor = "3.0.0"
 lifecycle = "2.2.0-beta01"
+multiplatformSettingsDatastore = "1.2.0"
 playServicesCodeScanner = "16.1.0"
-
-# androidx-compose-runtime = "1.8.0-alpha03"
-# androidx-lifecycle = "2.9.0-dev1873"
-# androidx-material = "1.12.0"
-# junit = "4.13.2"
-# kotlinx-coroutines = "1.8.1"
-# mvikotlin = "4.2.0"
-# openfoodfactsKotlin = "1.0-SNAPSHOT"
+datastoreCoreAndroid = "1.1.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastoreCoreJvm" }
+androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastoreCoreJvm" }
+androidx-datastore-core-jvm = { group = "androidx.datastore", name = "datastore-core-jvm", version.ref = "datastoreCoreJvm" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
 androidx-material3 = { group = "com.google.android.material", name = "material3", version.ref = "androidx-material3" }
 androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
-# auth-kt = { module = "io.github.jan-tennert.supabase:auth-kt", version.ref = "supabase-kt" }
-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlinReflect" }
-ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
-ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
-ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
-#postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabase-kt" }
-#realtime-kt = { module = "io.github.jan-tennert.supabase:realtime-kt", version.ref = "supabase-kt" }
-#bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "supabase-kt" }
 coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coilCompose" }
 coil3-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 decompose-extensions-compose = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
 jetbrains-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-jetbrains-lifecycle-viewmodel" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlinReflect" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 lifecycle = { module = "com.arkivanov.essenty:lifecycle", version.ref = "lifecycle" }
-# lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle-viewmodel" }
 lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-jetbrains-lifecycle-viewmodel" }
+multiplatform-settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettingsDatastore" }
+multiplatform-settings-coroutines = { module = "com.russhwolf:multiplatform-settings-coroutines", version.ref = "multiplatformSettingsDatastore" }
+multiplatform-settings-datastore = { module = "com.russhwolf:multiplatform-settings-datastore", version.ref = "multiplatformSettingsDatastore" }
+multiplatform-settings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettingsDatastore" }
 play-services-code-scanner = { module = "com.google.android.gms:play-services-code-scanner", version.ref = "playServicesCodeScanner" }
-
-# androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
-# androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-jetbrains-lifecycle-viewmodel" }
-# androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle-viewmodel" }
-# androidx-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "androidx-compose-runtime" }
-# coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
-# coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coilCompose" }
-# junit = { group = "junit", name = "junit", version.ref = "junit" }
-# kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-# kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-# mvikotlin = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "mvikotlin" }
-# mvikotlin-extensions-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines", version.ref = "mvikotlin" }
-# mvikotlin-logging = { module = "com.arkivanov.mvikotlin:mvikotlin-logging", version.ref = "mvikotlin" }
-# mvikotlin-main = { module = "com.arkivanov.mvikotlin:mvikotlin-main", version.ref = "mvikotlin" }
-# mvikotlin-timetravel = { module = "com.arkivanov.mvikotlin:mvikotlin-timetravel", version.ref = "mvikotlin" }
-# openfoodfacts-kotlin = { module = "openfoodfacts.github.scrachx.openfood.api.client:openfoodfacts-kotlin", version.ref = "openfoodfactsKotlin" }
-# vikotlin-extensions-coroutines = { module = "com.arkivanov.mvikotlin:vikotlin-extensions-coroutines", version.ref = "mvikotlin" }
-
+androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.flow
 
 import dev.upvote.api.ProfileApi
 import dev.upvote.api.first_party.Profile
+import dev.upvote.api.first_party.ProfileOptional
 
 class DefaultProfileContentRepository(
     private val profileApi: ProfileApi
@@ -12,7 +13,7 @@ class DefaultProfileContentRepository(
         emit(profileApi.getProfile())
     }
 
-    override fun updateProfile(profile: Profile) = flow {
+    override fun updateProfile(profile: ProfileOptional) = flow {
         emit(profileApi.updateProfile(profile))
     }
 }

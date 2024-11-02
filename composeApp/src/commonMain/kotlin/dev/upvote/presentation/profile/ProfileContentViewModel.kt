@@ -24,6 +24,7 @@ import kotlinx.serialization.json.Json
 import dev.upvote.api.HttpResponseException
 import dev.upvote.api.ProfileApi
 import dev.upvote.api.first_party.Profile
+import dev.upvote.api.first_party.ProfileOptional
 import dev.upvote.data.repository.profile.DefaultProfileContentRepository
 import dev.upvote.data.repository.profile.ProfileContentRepository
 import dev.upvote.httpClient
@@ -66,7 +67,7 @@ class ProfileContentViewModel(
                 currentCoroutineContext().ensureActive()
             } catch (e: HttpResponseException) {
                 if (e.response.status == HttpStatusCode.NotFound) {
-                    setErrorStr("Product not found")
+                    setErrorStr("Profile not found")
                 } else {
                     setErrorStr("[${e.response.status}] ${e.response.bodyAsText()}")
                 }
@@ -76,7 +77,7 @@ class ProfileContentViewModel(
         }
     }
 
-    fun updateProfile(profile: Profile) {
+    fun updateProfile(profile: ProfileOptional) {
         viewModelScope.launch {
             try {
                 val updatedProfile = profileContentRepository.updateProfile(profile = profile).first()

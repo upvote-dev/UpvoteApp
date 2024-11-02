@@ -11,4 +11,6 @@ data class Token(
     val tokenType: String,
     @SerialName("expires_in")
     val expiresIn: ULong
-)
+) {
+    fun getUsername() = accessToken.slice(IntRange(0, accessToken.indexOfFirst { it == ':' } - 1))
+}

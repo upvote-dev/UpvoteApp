@@ -9,12 +9,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.russhwolf.settings.ExperimentalSettingsApi
+import dev.upvote.api.first_party.Token
 
 import dev.upvote.presentation.bottom_stack.RootBottomScreen
 
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import dev.upvote.presentation.bottom_stack.RootBottomComponent
+import io.ktor.client.plugins.auth.providers.BearerTokens
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 val PLATFORM = getPlatform()
 
@@ -46,6 +53,7 @@ interface RootComponent {
     }
 }*/
 
+@OptIn(ExperimentalSettingsApi::class)
 @Composable
 @Preview
 fun App(
@@ -54,6 +62,22 @@ fun App(
     modifier: Modifier
 ) {
     val globalState by remember { mutableStateOf(GlobalState()) }
+    CoroutineScope(Dispatchers.Default).launch {
+        val accessToken = settingsSuspend.getStringOrNull("accessToken")
+        if (accessToken != null) {
+            bearerTokenStorage.add(BearerTokens(accessToken, accessToken))
+            globalMutableStateFlow.update {
+                it.copy(
+                    token = Token(
+                        accessToken = accessToken,
+                        tokenType = "Bearer",
+                        expiresIn = 3600u
+                    )
+                )
+            }
+        }
+    }
+
     val barcodeScannerAvailable = hasBarcodeScanner && upvote != null
 
     if (barcodeScannerAvailable) {

@@ -33,9 +33,11 @@ import dev.upvote.data.repository.auth.AuthRepository
 import dev.upvote.data.repository.auth.DefaultAuthRepository
 import dev.upvote.api.AuthApi
 import dev.upvote.bearerTokenStorage
+import dev.upvote.globalGlobalState
 import dev.upvote.globalMutableStateFlow
 import dev.upvote.httpClient
 import dev.upvote.invalidateBearerTokens
+import dev.upvote.settings
 import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -62,7 +64,7 @@ class SignInUpViewModel(
     )
 ) : ViewModel() {
     private val _uiState =
-        MutableStateFlow(AuthState(lastErrorStr = null, token = null, userId = null))
+        MutableStateFlow(AuthState(lastErrorStr = null, token = globalGlobalState.value.token, userId = null))
     val uiState: StateFlow<AuthState> = _uiState.asStateFlow()
 
     private fun setErrorStr(errorStr: String) {
@@ -83,7 +85,7 @@ class SignInUpViewModel(
         }
     }
 
-    private fun setToken(token: Token) {
+    fun setToken(token: Token) {
         _uiState.update {
             it.copy(
                 lastErrorStr = null,
@@ -98,6 +100,7 @@ class SignInUpViewModel(
         httpClient.authProvider<BearerAuthProvider>()?.clearToken()
         httpClient.invalidateBearerTokens()
         bearerTokenStorage.add(BearerTokens(token.accessToken, token.accessToken))
+        settings.putString("accessToken", token.accessToken)
     }
 
     fun acquireToken(credentials: Credentials) {

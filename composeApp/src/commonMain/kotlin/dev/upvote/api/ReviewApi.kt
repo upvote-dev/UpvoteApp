@@ -21,7 +21,7 @@ class ReviewApi(private val httpClient: HttpClient) {
         println("ContentType.Application.Json.toString(): ${ContentType.Application.Json.toString()}")
         val response: HttpResponse = httpClient.post("$BASE_URL/api/v0/review") {
             headers {
-                append(HttpHeaders.Accept, "application/json")
+                append(HttpHeaders.Accept, ContentType.Application.Json.toString())
             }
             contentType(ContentType.Application.Json)
             setBody(review)
