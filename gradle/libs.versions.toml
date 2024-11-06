@@ -1,13 +1,13 @@
 [versions]
-agp = "8.7.1"
+agp = "8.7.2"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
 
-androidx-activity-compose = "1.10.0-alpha02"
+androidx-activity-compose = "1.10.0-alpha03"
 androidx-appcompat = "1.7.0"
-androidx-constraintlayout = "2.1.4"
-androidx-core-ktx = "1.13.1"
+androidx-constraintlayout = "2.2.0"
+androidx-core-ktx = "1.15.0"
 androidx-espresso-core = "3.6.1"
 androidx-jetbrains-lifecycle-viewmodel = "2.9.0-dev1890"
 androidx-material = "1.13.0-alpha07"
@@ -16,6 +16,7 @@ androidx-test-junit = "1.2.1"
 coilCompose = "3.0.0-rc01"
 compose-plugin = "1.8.0-dev1875"
 coroutines = "1.9.0"
+datastoreCoreAndroid = "1.1.1"
 datastoreCoreJvm = "1.1.1"
 decompose = "3.2.0-beta02"
 kotlin = "2.0.20"
@@ -26,7 +27,6 @@ ktor = "3.0.0"
 lifecycle = "2.2.0-beta01"
 multiplatformSettingsDatastore = "1.2.0"
 playServicesCodeScanner = "16.1.0"
-datastoreCoreAndroid = "1.1.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
@@ -35,6 +35,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastoreCoreJvm" }
 androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastoreCoreJvm" }
+androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
 androidx-datastore-core-jvm = { group = "androidx.datastore", name = "datastore-core-jvm", version.ref = "datastoreCoreJvm" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
@@ -67,7 +68,6 @@ multiplatform-settings-coroutines = { module = "com.russhwolf:multiplatform-sett
 multiplatform-settings-datastore = { module = "com.russhwolf:multiplatform-settings-datastore", version.ref = "multiplatformSettingsDatastore" }
 multiplatform-settings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettingsDatastore" }
 play-services-code-scanner = { module = "com.google.android.gms:play-services-code-scanner", version.ref = "playServicesCodeScanner" }
-androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

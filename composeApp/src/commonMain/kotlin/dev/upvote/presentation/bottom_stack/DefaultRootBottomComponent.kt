@@ -19,11 +19,12 @@ import dev.upvote.presentation.product.ProductComponent
 import dev.upvote.presentation.product.DefaultProductComponent
 import dev.upvote.presentation.profile.DefaultProfileComponent
 import dev.upvote.presentation.profile.ProfileComponent
+import dev.upvote.presentation.review.DefaultReviewComponent
+import dev.upvote.presentation.review.ReviewComponent
 
 
 class DefaultRootBottomComponent(
     componentContext: ComponentContext
-
 ) : RootBottomComponent, ComponentContext by componentContext {
     private val navigationBottomStackNavigation = StackNavigation<ConfigBottom>()
 
@@ -46,13 +47,16 @@ class DefaultRootBottomComponent(
         componentContext: ComponentContext
     ): RootBottomComponent.ChildBottom =
         when (config) {
-
             is ConfigBottom.Profile -> RootBottomComponent.ChildBottom.ProfileChild(
                 profileComponent(componentContext)
             )
 
             is ConfigBottom.Product -> RootBottomComponent.ChildBottom.ProductChild(
                 productComponent(componentContext)
+            )
+
+            is ConfigBottom.Review -> RootBottomComponent.ChildBottom.ReviewChild(
+                reviewComponent(componentContext)
             )
 
             is ConfigBottom.Leaderboard -> RootBottomComponent.ChildBottom.LeaderboardChild(
@@ -68,28 +72,25 @@ class DefaultRootBottomComponent(
     private fun profileComponent(componentContext: ComponentContext): ProfileComponent =
         DefaultProfileComponent(
             componentContext = componentContext,
-            onFinished = {
-
-            }
-
+            onFinished = {}
         )
 
     private fun productComponent(componentContext: ComponentContext): ProductComponent =
         DefaultProductComponent(
             componentContext = componentContext,
-            onShowWelcome = {
+            onShowWelcome = {}
+        )
 
-            }
-
+    private fun reviewComponent(componentContext: ComponentContext): ReviewComponent =
+        DefaultReviewComponent(
+            componentContext = componentContext,
+            onShowWelcome = {}
         )
 
     private fun leaderboardComponent(componentContext: ComponentContext): LeaderboardComponent =
         DefaultLeaderboardComponent(
             componentContext = componentContext,
-            onShowWelcome = {
-
-            }
-
+            onShowWelcome = {}
         )
 
     private fun notificationComponent(componentContext: ComponentContext): NotificationComponent =
@@ -103,6 +104,10 @@ class DefaultRootBottomComponent(
 
     override fun openProductScreen() {
         navigationBottomStackNavigation.bringToFront(ConfigBottom.Product)
+    }
+
+    override fun openReviews() {
+        navigationBottomStackNavigation.bringToFront(ConfigBottom.Review)
     }
 
     override fun openLeaderboardScreen() {
@@ -122,11 +127,13 @@ class DefaultRootBottomComponent(
         data object Product : ConfigBottom()
 
         @Serializable
+        data object Review : ConfigBottom()
+
+        @Serializable
         data object Leaderboard : ConfigBottom()
 
         @Serializable
         data object Notification : ConfigBottom()
-
     }
 
     init {
@@ -140,7 +147,5 @@ class DefaultRootBottomComponent(
                 }
             }
         })
-
     }
-
 }

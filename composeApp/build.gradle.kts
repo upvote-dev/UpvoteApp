@@ -157,7 +157,7 @@ kotlin {
 
             implementation(libs.multiplatform.settings)
             implementation(libs.multiplatform.settings.coroutines)
-            implementation(libs.multiplatform.settings.datastore)
+            // implementation(libs.multiplatform.settings.datastore)
         }
     }
 }
@@ -213,6 +213,15 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            macOS {
+                iconFile.set(project.file("assets/icon.icns"))
+            }
+            windows {
+                iconFile.set(project.file("assets/icon.ico"))
+            }
+            linux {
+                iconFile.set(project.file("assets/icon.png"))
+            }
             packageName = "dev.upvote"
             packageVersion = "1.0.0"
         }

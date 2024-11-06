@@ -3,12 +3,9 @@ package dev.upvote.presentation.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
-import io.ktor.client.HttpClient
 import io.ktor.client.network.sockets.SocketTimeoutException
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
-import io.ktor.serialization.kotlinx.json.json
 
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.currentCoroutineContext
@@ -19,7 +16,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 
 import dev.upvote.api.HttpResponseException
 import dev.upvote.api.ProfileApi

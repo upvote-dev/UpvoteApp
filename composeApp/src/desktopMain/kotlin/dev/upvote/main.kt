@@ -11,6 +11,9 @@ import com.arkivanov.decompose.extensions.compose.lifecycle.LifecycleController
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 
 import dev.upvote.presentation.bottom_stack.DefaultRootBottomComponent
+import dev.upvote.resources.Res
+import dev.upvote.resources.barcode_scanner_24px
+import org.jetbrains.compose.resources.painterResource
 
 fun main() {
     val lifecycle = LifecycleRegistry()
@@ -27,6 +30,7 @@ fun main() {
             onCloseRequest = ::exitApplication,
             state = windowState,
             title = "Upvote",
+            icon = painterResource(Res.drawable.ic_launcher_background)
         ) {
             LifecycleController(
                 lifecycleRegistry = lifecycle,

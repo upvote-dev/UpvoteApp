@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.ShoppingCart
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -48,6 +50,7 @@ import dev.upvote.GlobalState
 import dev.upvote.IUpvote
 import dev.upvote.presentation.notifications.NotificationContent
 import dev.upvote.presentation.profile.ProfileScreen
+import dev.upvote.presentation.review.ReviewScreen
 import dev.upvote.resources.Res
 import dev.upvote.resources.barcode_scanner_24px
 import dev.upvote.resources.emoji_events_24px
@@ -72,6 +75,7 @@ fun RootBottomScreen(
             listOf(
                 ScreensBottom("Profile", component::openProfile, false),
                 ScreensBottom("Product", component::openProductScreen, false),
+                ScreensBottom("Reviews", component::openReviews, false),
                 ScreensBottom("Notify", component::openNotifications, false),
                 ScreensBottom("Leaderboard", component::openLeaderboardScreen, false)
             )
@@ -111,18 +115,23 @@ fun RootBottomScreen(
                         NavigationBarItem(
                             icon = {
                                 when (screensBottom.name) {
-                                    "Product" -> Icon(
-                                        Icons.Outlined.ShoppingCart,
-                                        contentDescription = null
-                                    )
-
                                     "Profile" -> Icon(
                                         Icons.Outlined.Face,
                                         contentDescription = null
                                     )
 
+                                    "Product" -> Icon(
+                                        Icons.Outlined.ShoppingCart,
+                                        contentDescription = null
+                                    )
+
+                                    "Review" -> Icon(
+                                        Icons.Outlined.Star,
+                                        contentDescription = null
+                                    )
+
                                     "Notifications" -> Icon(
-                                        Icons.Outlined.Notifications,
+                                        Icons.Default.Call,
                                         contentDescription = null
                                     )
 
@@ -171,8 +180,16 @@ fun RootBottomScreen(
                                 modifier = modifier
                             )
 
+                        is RootBottomComponent.ChildBottom.ReviewChild ->
+                            ReviewScreen(
+                                component = child.component,
+                                modifier = modifier
+                            )
+
                         is RootBottomComponent.ChildBottom.NotificationsChild ->
-                            NotificationContent(component = child.component)
+                            NotificationContent(
+                                component = child.component
+                            )
 
                         is RootBottomComponent.ChildBottom.LeaderboardChild ->
                             LeaderboardContent(

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.update
 
 import dev.upvote.api.first_party.Token
 
-const val BASE_URL = ""
+const val BASE_URL = "https://v0.upvote.dev"
 
 data class GlobalState(
     var barcode: String? = null,

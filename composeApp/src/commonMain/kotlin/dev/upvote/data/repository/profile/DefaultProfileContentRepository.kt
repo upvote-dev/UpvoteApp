@@ -3,7 +3,6 @@ package dev.upvote.data.repository.profile
 import kotlinx.coroutines.flow.flow
 
 import dev.upvote.api.ProfileApi
-import dev.upvote.api.first_party.Profile
 import dev.upvote.api.first_party.ProfileOptional
 
 class DefaultProfileContentRepository(
