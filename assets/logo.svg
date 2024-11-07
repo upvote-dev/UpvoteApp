@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   width="769.23077"
+   height="769.23077"
+   viewBox="0 0 769.23076 769.23076"
+   id="svg2"
+   sodipodi:docname="Color logo - no background.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="769.23077"
+       height="769.23077"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <g
+     transform="matrix(7.6923077,0,0,7.6923077,-153.84615,-153.84615)"
+     id="g2">
+    <defs
+       id="SvgjsDefs1244" />
+    <g
+       id="SvgjsG1245"
+       featureKey="v37d4h-0"
+       transform="matrix(1.7241379,0,0,1.7241379,14.827586,14.827586)"
+       fill="#7f4a88">
+      <g
+         id="g1">
+        <path
+           d="M 3,17.414 17.414,3 H 36.182 C 34.189,3.964 32.34,5.246 30.728,6.858 L 7.063,30.523 C 4.432,27.316 3,23.333 3,19.13 V 19 Z M 19,61 H 17.414 L 3,46.586 V 27.818 c 0.964,1.994 2.246,3.842 3.858,5.455 L 30.523,56.938 C 27.316,59.569 23.333,61 19.13,61 Z M 61,46.586 46.586,61 H 27.818 c 1.993,-0.964 3.842,-2.246 5.454,-3.858 L 56.937,33.477 C 59.568,36.684 61,40.667 61,44.87 V 45 Z M 57.142,30.728 33.477,7.063 C 36.684,4.431 40.667,3 44.87,3 H 45 46.586 L 61,17.414 V 36.182 C 60.036,34.188 58.754,32.34 57.142,30.728 Z"
+           id="path1" />
+      </g>
+    </g>
+  </g>
+</svg>
