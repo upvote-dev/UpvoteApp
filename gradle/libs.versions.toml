@@ -3,44 +3,35 @@ agp = "8.7.2"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
+app-Name = "Upvote"
+app-packageName = "dev.upvote"
+app-mainName = ".MainKt"
+app-versionName = "1.0.0" # "Version"
+app-versionCode = "202411070" # "Build"
 
 androidx-activity-compose = "1.10.0-alpha03"
-androidx-appcompat = "1.7.0"
-androidx-constraintlayout = "2.2.0"
-androidx-core-ktx = "1.15.0"
-androidx-espresso-core = "3.6.1"
 androidx-jetbrains-lifecycle-viewmodel = "2.9.0-dev1890"
-androidx-material = "1.13.0-alpha07"
-androidx-material3 = "1.4.0-alpha02"
-androidx-test-junit = "1.2.1"
+buildconfig = "5.5.0"
 coilCompose = "3.0.0-rc01"
 compose-plugin = "1.8.0-dev1875"
 coroutines = "1.9.0"
 datastoreCoreAndroid = "1.1.1"
 datastoreCoreJvm = "1.1.1"
 decompose = "3.2.0-beta02"
-kotlin = "2.0.20"
-kotlinReflect = "2.1.0-Beta2"
+kotlin = "2.0.21"
+kotlinReflect = "2.1.0-RC"
 kotlinx-coroutines = "1.9.0"
 kotlinxDatetime = "0.6.1"
 ktor = "3.0.0"
-lifecycle = "2.2.0-beta01"
+license-report = "2.9"
+lifecycle = "2.2.1"
 multiplatformSettingsDatastore = "1.2.0"
 playServicesCodeScanner = "16.1.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
-androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
-androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastoreCoreJvm" }
-androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastoreCoreJvm" }
 androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
 androidx-datastore-core-jvm = { group = "androidx.datastore", name = "datastore-core-jvm", version.ref = "datastoreCoreJvm" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
-androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
-androidx-material3 = { group = "com.google.android.material", name = "material3", version.ref = "androidx-material3" }
-androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
 coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coilCompose" }
 coil3-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
@@ -51,7 +42,6 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
-ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
@@ -65,7 +55,6 @@ lifecycle = { module = "com.arkivanov.essenty:lifecycle", version.ref = "lifecyc
 lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-jetbrains-lifecycle-viewmodel" }
 multiplatform-settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettingsDatastore" }
 multiplatform-settings-coroutines = { module = "com.russhwolf:multiplatform-settings-coroutines", version.ref = "multiplatformSettingsDatastore" }
-multiplatform-settings-datastore = { module = "com.russhwolf:multiplatform-settings-datastore", version.ref = "multiplatformSettingsDatastore" }
 multiplatform-settings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettingsDatastore" }
 play-services-code-scanner = { module = "com.google.android.gms:play-services-code-scanner", version.ref = "playServicesCodeScanner" }
 
@@ -73,6 +62,8 @@ play-services-code-scanner = { module = "com.google.android.gms:play-services-co
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+gmazzo-buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+jk1-license-report = { id = "com.github.jk1.dependency-license-report", version.ref = "license-report" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

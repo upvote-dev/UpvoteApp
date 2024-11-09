@@ -6,14 +6,15 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 
+import org.jetbrains.compose.resources.painterResource
+
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.decompose.extensions.compose.lifecycle.LifecycleController
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 
 import dev.upvote.presentation.bottom_stack.DefaultRootBottomComponent
 import dev.upvote.resources.Res
-import dev.upvote.resources.barcode_scanner_24px
-import org.jetbrains.compose.resources.painterResource
+import dev.upvote.resources.logo
 
 fun main() {
     val lifecycle = LifecycleRegistry()
@@ -25,12 +26,11 @@ fun main() {
     }
     application {
         val windowState = rememberWindowState()
-
         Window(
             onCloseRequest = ::exitApplication,
             state = windowState,
             title = "Upvote",
-            icon = painterResource(Res.drawable.ic_launcher_background)
+            icon = painterResource(Res.drawable.logo)
         ) {
             LifecycleController(
                 lifecycleRegistry = lifecycle,
@@ -38,9 +38,11 @@ fun main() {
                 windowInfo = LocalWindowInfo.current,
             )
 
-            App(rootBottomComponent = rootBottomComponent,
+            App(
+                rootBottomComponent = rootBottomComponent,
                 upvote = getUpvote(),
-                modifier = Modifier)
+                modifier = Modifier
+            )
         }
     }
 }

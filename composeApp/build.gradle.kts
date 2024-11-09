@@ -1,21 +1,72 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
+import java.io.FileInputStream
+import java.util.Properties
+
+import com.github.jk1.license.render.JsonReportRenderer
+
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.gmazzo.buildconfig)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.jk1.license.report)
+    alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinSerialization)
     id("com.google.devtools.ksp") version "2.0.21-1.0.26"
     id("com.rickclephas.kmp.nativecoroutines") version "1.0.0-ALPHA-37"
 }
 
+licenseReport {
+    renderers = arrayOf(
+        JsonReportRenderer("licenses.json")
+    )
+    outputDir = "${project.layout.projectDirectory}/reports/licenses"
+}
+
+tasks.register("prepareLicenseReport") {
+    dependsOn("generateLicenseReport")
+    doLast {
+        copy {
+            from("${project.layout.projectDirectory}/reports/licenses/licenses.json")
+            into("src/commonMain/composeResources/files/json")
+        }
+        delete("${project.layout.projectDirectory}/reports")
+    }
+}
+
+tasks.named("preBuild") {
+    dependsOn("prepareLicenseReport")
+}
+
+fun getKeystoreProperties(): Properties {
+    val keystorePropertiesFile = rootProject.file("keystore.properties")
+
+    val keystoreProperties = Properties()
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+    } else {
+        keystoreProperties.load(FileInputStream(rootProject.file("keystore.default.properties")))
+    }
+    return keystoreProperties
+}
+
+buildConfig {
+    val keystoreProperties = getKeystoreProperties()
+
+    packageName(libs.versions.app.packageName.get())
+    buildConfigField("APP_VERSION", libs.versions.app.versionName.get())
+    buildConfigField("APP_BUILD", libs.versions.app.versionCode.get())
+    buildConfigField("ENCRYPTION_KEY", keystoreProperties["encryptionKey"] as String)
+}
+
 kotlin {
+    androidTarget()
+    jvm("desktop")
     /*cocoapods {
         // Required properties
         // Specify the required Pod version here. Otherwise, the Gradle project version is used.
@@ -85,6 +136,9 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
+            binaryOption("bundleId", libs.versions.app.packageName.get())
+            binaryOption("bundleVersion", libs.versions.app.versionCode.get())
+            binaryOption("bundleShortVersionString", libs.versions.app.versionName.get())
             isStatic = true
             // export(libs.decompose)
             // export(libs.lifecycle)
@@ -167,6 +221,10 @@ compose {
         publicResClass = false
         packageOfResClass = "dev.upvote.resources"
         generateResClass = auto
+        customDirectory(
+            sourceSetName = "desktopMain",
+            directoryProvider = provider { layout.projectDirectory.dir("desktopResources") }
+        )
     }
 }
 
@@ -179,29 +237,46 @@ android {
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     defaultConfig {
-        applicationId = "dev.upvote"
+        namespace = libs.versions.app.packageName.get()
+        applicationId = libs.versions.app.packageName.get()
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        versionName = libs.versions.app.versionName.get()
+        versionCode = libs.versions.app.versionCode.get().toInt()
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
         }
+
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("debug")
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+
+            resValue("string", "app_name", libs.versions.app.name.get() + " (Debug)")
+
+            isMinifyEnabled = false
+            isDebuggable = true
+        }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     buildFeatures {
         compose = true
     }
+
     dependencies {
         debugImplementation(compose.uiTooling)
     }
@@ -209,21 +284,35 @@ android {
 
 compose.desktop {
     application {
-        mainClass = "dev.upvote.MainKt"
+        mainClass = libs.versions.app.packageName.get() + libs.versions.app.mainName.get()
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+
+            packageName = libs.versions.app.packageName.get()
+            packageVersion = libs.versions.app.versionName.get()
+            version = libs.versions.app.versionName.get()
+            licenseFile.set(project.file("LICENSE-APACHE"))
+
             macOS {
-                iconFile.set(project.file("assets/icon.icns"))
+                bundleID = libs.versions.app.packageName.get()
+                packageName = libs.versions.app.name.get()
+                packageVersion = libs.versions.app.versionName.get()
+                dockName = libs.versions.app.name.get()
+                iconFile.set(rootProject.file("assets/icon.icns"))
             }
+
             windows {
-                iconFile.set(project.file("assets/icon.ico"))
+                packageName = libs.versions.app.name.get()
+                packageVersion = libs.versions.app.versionName.get()
+                iconFile.set(rootProject.file("assets/icon.ico"))
             }
+
             linux {
-                iconFile.set(project.file("assets/icon.png"))
+                packageName = libs.versions.app.name.get()
+                packageVersion = libs.versions.app.versionName.get()
+                iconFile.set(rootProject.file("assets/icon.png"))
             }
-            packageName = "dev.upvote"
-            packageVersion = "1.0.0"
         }
     }
 }
