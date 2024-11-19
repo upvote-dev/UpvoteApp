@@ -67,7 +67,7 @@ fun ProductDetailScreen(
         Row(modifier = Modifier.padding(20.dp)) {
             IconButton(
                 onClick = {
-                    println("Clicked upvote, authUiState: ${authUiState}")
+                    println("Clicked upvote, authUiState: $authUiState")
                     if (globalGlobalGlobalStateLocal.token != null) {
                         viewModel.postReview(
                             NewReview(

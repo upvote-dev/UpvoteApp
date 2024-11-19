@@ -2,22 +2,22 @@
     "dependencies": [
         {
             "moduleName": "androidx.activity:activity",
-            "moduleUrl": "https://developer.android.com/jetpack/androidx/releases/activity#1.10.0-alpha03",
-            "moduleVersion": "1.10.0-alpha03",
+            "moduleUrl": "https://developer.android.com/jetpack/androidx/releases/activity#1.10.0-beta01",
+            "moduleVersion": "1.10.0-beta01",
             "moduleLicense": "The Apache Software License, Version 2.0",
             "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
         },
         {
             "moduleName": "androidx.activity:activity-compose",
-            "moduleUrl": "https://developer.android.com/jetpack/androidx/releases/activity#1.10.0-alpha03",
-            "moduleVersion": "1.10.0-alpha03",
+            "moduleUrl": "https://developer.android.com/jetpack/androidx/releases/activity#1.10.0-beta01",
+            "moduleVersion": "1.10.0-beta01",
             "moduleLicense": "The Apache Software License, Version 2.0",
             "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
         },
         {
             "moduleName": "androidx.activity:activity-ktx",
-            "moduleUrl": "https://developer.android.com/jetpack/androidx/releases/activity#1.10.0-alpha03",
-            "moduleVersion": "1.10.0-alpha03",
+            "moduleUrl": "https://developer.android.com/jetpack/androidx/releases/activity#1.10.0-beta01",
+            "moduleVersion": "1.10.0-beta01",
             "moduleLicense": "The Apache Software License, Version 2.0",
             "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
         },

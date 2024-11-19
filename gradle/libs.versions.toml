@@ -9,7 +9,7 @@ app-mainName = ".MainKt"
 app-versionName = "1.0.0" # "Version"
 app-versionCode = "202411100" # "Build"
 
-androidx-activity-compose = "1.10.0-alpha03"
+androidx-activity-compose = "1.10.0-beta01"
 androidx-jetbrains-lifecycle-viewmodel = "2.9.0-dev1905"
 buildconfig = "5.5.0"
 coilCompose = "3.0.2"

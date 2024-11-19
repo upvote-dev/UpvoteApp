@@ -1,5 +1,7 @@
 package dev.upvote.presentation.review
 
+import org.jetbrains.compose.resources.painterResource
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -52,10 +54,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+
 import dev.upvote.resources.Res
-import dev.upvote.resources.barcode_scanner_24px
 import dev.upvote.resources.thumb_down_24px
-import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
