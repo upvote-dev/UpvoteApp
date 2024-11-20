@@ -2,6 +2,7 @@ package dev.upvote.presentation.product
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.upvote.api.AuthError
 
 import io.ktor.client.HttpClient
 import io.ktor.client.network.sockets.SocketTimeoutException
@@ -27,6 +28,7 @@ import dev.upvote.api.ReviewApi
 import dev.upvote.api.first_party.NewReview
 import dev.upvote.data.repository.review.DefaultReviewRepository
 import dev.upvote.data.repository.review.ReviewRepository
+import dev.upvote.globalGlobalState
 import dev.upvote.httpClient
 
 class ProductDetailViewModel(
@@ -127,6 +129,9 @@ class ProductDetailViewModel(
     }
 
     fun postReview(review: NewReview) {
+        if (globalGlobalState.value.token == null) {
+            throw AuthError("not logged in")
+        }
         viewModelScope.launch {
             try {
                 val reviewCreated = reviewRepository.addReview(review).first()

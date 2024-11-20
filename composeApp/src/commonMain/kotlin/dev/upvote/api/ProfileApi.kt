@@ -16,6 +16,7 @@ import dev.upvote.BASE_URL
 import dev.upvote.SUCCESS_HTTP_CODES
 import dev.upvote.api.first_party.Profile
 import dev.upvote.api.first_party.ProfileOptional
+import dev.upvote.globalGlobalState
 
 class ProfileApi(private val httpClient: HttpClient) {
     suspend fun getProfile(): Profile? {
@@ -33,6 +34,10 @@ class ProfileApi(private val httpClient: HttpClient) {
     }
 
     suspend fun updateProfile(profile: ProfileOptional): Profile {
+        if (globalGlobalState.value.token == null) {
+            throw AuthError("not logged in")
+        }
+        profile.username = globalGlobalState.value.token?.getUsername().toString()
         val response: HttpResponse = httpClient.post("$BASE_URL/api/v0/profile") {
             headers {
                 append(HttpHeaders.Accept, ContentType.Application.Json.toString())

@@ -1,8 +1,9 @@
-package dev.upvote.presentation.auth
+package dev.upvote.presentation.profile
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -36,21 +37,22 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 import kotlinx.coroutines.flow.update
 
 import dev.upvote.api.first_party.Credentials
+import dev.upvote.api.first_party.ProfileOptional
+import dev.upvote.globalGlobalState
 import dev.upvote.globalMutableStateFlow
-import dev.upvote.presentation.auth.signinup.SignInUpViewModel
+import kotlinx.serialization.SerialName
 
 
 @Composable
-fun AuthScreen(
-    viewModel: SignInUpViewModel = viewModel { SignInUpViewModel() },
+fun ProfileEditScreen(
+    viewModel: ProfileContentViewModel = androidx.lifecycle.viewmodel.compose.viewModel { ProfileContentViewModel() },
     onDismissRequest: () -> Unit
 ) {
-    val uiState: AuthState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
     Surface(
         modifier = Modifier.wrapContentWidth().wrapContentHeight(),
         shape = MaterialTheme.shapes.large,
@@ -64,30 +66,30 @@ fun AuthScreen(
                         fontSize = 20.sp,
                     )
                 ) {
-                    append("Auth")
+                    append(uiState.userId ?: globalGlobalState.value.token?.getUsername().toString())
+                    append("'s profile")
                 }
             })
             Spacer(modifier = Modifier.height(24.dp))
 
-            var username by rememberSaveable { mutableStateOf("") }
-            var password by rememberSaveable { mutableStateOf("") }
+
+            var alias: String? by rememberSaveable { mutableStateOf(null) }
+            val profileImageUrl: String? by rememberSaveable { mutableStateOf(null) }
+
             val focusManager = LocalFocusManager.current
 
             val onSubmit = {
-                println("Auth")
-                viewModel.clearError()
-                viewModel.acquireToken(Credentials(username = username, password = password))
-                if (/*uiState.token != null &&*/uiState.lastErrorStr == null) {
-                    globalMutableStateFlow.update { it.copy(token = uiState.token) }
-                    onDismissRequest()
-                }
-                // uiState.userId = username
+                println("Edit profile")
+                viewModel.updateProfile(ProfileOptional(
+                    alias = if (alias.isNullOrEmpty()) null else alias,
+                    profileImageUrl = if (profileImageUrl.isNullOrEmpty()) null else profileImageUrl
+                ))
+                onDismissRequest()
             }
-
             OutlinedTextField(
-                value = username,
-                label = { Text("Email") },
-                onValueChange = { username = it },
+                value = alias ?: "",
+                label = { Text("Alias") },
+                onValueChange = { alias = it },
                 modifier = Modifier
                     .onPreviewKeyEvent {
                         if (it.key == Key.Tab) {
@@ -103,23 +105,21 @@ fun AuthScreen(
                 )
             )
             OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                visualTransformation = PasswordVisualTransformation(),
-                label = { Text("Password") },
+                value = profileImageUrl ?: "",
+                label = { Text("profile image url") },
+                onValueChange = { alias = it },
                 modifier = Modifier
                     .onPreviewKeyEvent {
-                        if (it.key == Key.Enter) {
+                        if (it.key == Key.Tab) {
                             focusManager.moveFocus(FocusDirection.Down)
-                            onSubmit()
                             true
                         } else {
                             false
                         }
                     },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
                 keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                    onNext = { focusManager.moveFocus(FocusDirection.Enter) }
                 )
             )
 
@@ -137,7 +137,7 @@ fun AuthScreen(
                 })
             }
 
-            Button(onClick = onSubmit) {
+            Button(onClick = onSubmit, modifier = Modifier.fillMaxWidth()) {
                 Text(buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(
@@ -145,7 +145,7 @@ fun AuthScreen(
                             fontSize = 15.sp
                         )
                     ) {
-                        append("Sign in up")
+                        append("Edit profile")
                     }
                 })
             }

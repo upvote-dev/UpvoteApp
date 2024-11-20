@@ -5,20 +5,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absolutePadding
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -50,12 +45,14 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+import kotlinx.coroutines.flow.update
+
 import dev.upvote.OnLifecycleEvent
-import dev.upvote.api.first_party.ProfileOptional
 import dev.upvote.globalGlobalState
 import dev.upvote.globalMutableStateFlow
 import dev.upvote.presentation.auth.AuthScreen
-import kotlinx.coroutines.flow.update
+import dev.upvote.presentation.settings.SettingsScreen
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,6 +85,34 @@ fun ProfileScreen(
         ) {
             AuthScreen(onDismissRequest = onDismissRequest)
         }
+    } else if (uiState.showEdit) {
+        val onDismissRequest = {
+            viewModel.toggleShowEdit()
+        }
+        Dialog(
+            onDismissRequest = onDismissRequest,
+            properties = DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true
+            )
+        ) {
+            ProfileEditScreen(onDismissRequest = onDismissRequest)
+        }
+    } else if (uiState.showSettings) {
+        val onDismissRequest = {
+            viewModel.toggleShowSettings()
+        }
+        Dialog(
+            onDismissRequest = onDismissRequest,
+            properties = DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true
+            )
+        ) {
+            SettingsScreen(onDismissRequest = onDismissRequest, onLogout = {
+                viewModel.resetToDefault()
+            })
+        }
     } else {
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
         Scaffold(
@@ -96,13 +121,13 @@ fun ProfileScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "Welcome, ${uiState.profile?.alias ?: "Alias"}!",
+                            "Welcome, ${uiState.profile.alias}!",
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
                     },
                     navigationIcon = {
-                        IconButton(onClick = { /* doSomething() */ }) {
+                        IconButton(onClick = { viewModel.toggleShowEdit() }) {
                             Icon(
                                 imageVector = Icons.Filled.AccountCircle,
                                 contentDescription = "Localized description"
@@ -111,7 +136,7 @@ fun ProfileScreen(
                     },
                     actions = {
                         // RowScope here, so these icons will be placed horizontally
-                        IconButton(onClick = { /* doSomething() */ }) {
+                        IconButton(onClick = { viewModel.toggleShowSettings() }) {
                             Icon(
                                 imageVector = Icons.Filled.ThumbUp,
                                 contentDescription = "Localized description"
@@ -134,25 +159,6 @@ fun ProfileScreen(
                     // verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Button(
-                        onClick = {
-                            println("updateProfile clicked")
-                            if (globalGlobalState.value.token != null) {
-                                viewModel.updateProfile(
-                                    ProfileOptional(
-                                        username = globalGlobalState.value.token?.getUsername()
-                                            ?: "Username",
-                                        alias = "foo"
-                                    )
-                                )
-                            } else
-                                globalMutableStateFlow.update { it.copy(showAuth = true) }
-                        },
-                        modifier = modifier.fillMaxWidth().padding(),
-                    ) {
-                        Text("Update profile [change alias to `foo`]")
-                    }
-
                     Text(
                         buildAnnotatedString {
                             append("You are an Upvote ")
@@ -165,7 +171,7 @@ fun ProfileScreen(
                     LinearProgressIndicator(
                         progress = { .66F },
                         strokeCap = StrokeCap.Round,
-                        trackColor = ProgressIndicatorDefaults.circularColor,
+                        trackColor = ProgressIndicatorDefaults.circularDeterminateTrackColor,
                         gapSize = 0.dp,
                         modifier = Modifier
                             .fillMaxWidth(0.5F)
@@ -198,7 +204,7 @@ fun ProfileScreen(
                                     )
                                 }) {
                             Text("You have")
-                            Text("8,328", style = MaterialTheme.typography.displayMedium)
+                            Text(uiState.profile.coins.toString(), style = MaterialTheme.typography.displayMedium)
                             Text("upcoins!")
                         }
                         Spacer(Modifier.weight(1f))

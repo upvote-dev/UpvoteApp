@@ -2,6 +2,7 @@ package dev.upvote.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.upvote.api.AuthError
 
 import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ktor.client.statement.bodyAsText
@@ -19,10 +20,12 @@ import kotlinx.coroutines.launch
 
 import dev.upvote.api.HttpResponseException
 import dev.upvote.api.ProfileApi
+import dev.upvote.api.first_party.DefaultProfile
 import dev.upvote.api.first_party.Profile
 import dev.upvote.api.first_party.ProfileOptional
 import dev.upvote.data.repository.profile.DefaultProfileContentRepository
 import dev.upvote.data.repository.profile.ProfileContentRepository
+import dev.upvote.globalGlobalState
 import dev.upvote.httpClient
 
 class ProfileContentViewModel(
@@ -31,7 +34,13 @@ class ProfileContentViewModel(
     )
 ) : ViewModel() {
     private val _uiState =
-        MutableStateFlow(ProfileContentState(userId = null, lastErrorStr = null, profile = null))
+        MutableStateFlow(
+            ProfileContentState(
+                userId = null,
+                lastErrorStr = null,
+                profile = DefaultProfile
+            )
+        )
     val uiState: StateFlow<ProfileContentState> = _uiState.asStateFlow()
 
     private fun setErrorStr(errorStr: String) {
@@ -50,14 +59,40 @@ class ProfileContentViewModel(
         }
     }
 
+    fun toggleShowEdit() {
+        _uiState.update {
+            it.copy(
+                showEdit = !_uiState.value.showEdit
+            )
+        }
+    }
+
+    fun toggleShowSettings() {
+        _uiState.update {
+            it.copy(
+                showSettings = !_uiState.value.showSettings
+            )
+        }
+    }
+
+    fun resetToDefault() {
+        _uiState.update {
+            it.copy(
+                profile = DefaultProfile
+            )
+        }
+    }
+
     fun getProfile() {
+        if (globalGlobalState.value.token == null) {
+            setErrorStr("[authError] Not logged in")
+            return
+        }
         viewModelScope.launch {
             try {
                 val profile = profileContentRepository.getProfile().first()
-                if (profile != null) {
-                    setProfile(
-                        profile = profile
-                    )
+                profile.also {
+                    setProfile(profile = profile!!)
                 }
             } catch (e: CancellationException) {
                 currentCoroutineContext().ensureActive()
@@ -74,9 +109,13 @@ class ProfileContentViewModel(
     }
 
     fun updateProfile(profile: ProfileOptional) {
+        if (globalGlobalState.value.token == null) {
+            throw AuthError("not logged in")
+        }
         viewModelScope.launch {
             try {
-                val updatedProfile = profileContentRepository.updateProfile(profile = profile).first()
+                val updatedProfile =
+                    profileContentRepository.updateProfile(profile = profile).first()
                 if (updatedProfile != null) {
                     setProfile(
                         profile = updatedProfile

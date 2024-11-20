@@ -1,5 +1,6 @@
 package dev.upvote.api.first_party
 
+import dev.upvote.data.CreatedAt
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -52,11 +53,3 @@ data class NewReview(
     @SerialName("video_url")
     val videoUrl: String?
 )
-
-@Serializable
-data class CreatedAt(
-    @SerialName("nanos_since_epoch")
-    val nanosSinceEpoch: ULong,
-    @SerialName("secs_since_epoch")
-    val secsSinceEpoch: ULong
-);
