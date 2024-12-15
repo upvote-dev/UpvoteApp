@@ -27,6 +27,7 @@ import dev.upvote.data.repository.profile.DefaultProfileContentRepository
 import dev.upvote.data.repository.profile.ProfileContentRepository
 import dev.upvote.globalGlobalState
 import dev.upvote.httpClient
+import kotlinx.coroutines.flow.firstOrNull
 
 class ProfileContentViewModel(
     private val profileContentRepository: ProfileContentRepository = DefaultProfileContentRepository(
@@ -90,9 +91,9 @@ class ProfileContentViewModel(
         }
         viewModelScope.launch {
             try {
-                val profile = profileContentRepository.getProfile().first()
-                profile.also {
-                    setProfile(profile = profile!!)
+                val profile = profileContentRepository.getProfile().firstOrNull()
+                profile?.let {
+                    setProfile(profile = it)
                 }
             } catch (e: CancellationException) {
                 currentCoroutineContext().ensureActive()

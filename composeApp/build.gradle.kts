@@ -299,7 +299,9 @@ compose.desktop {
                 packageName = libs.versions.app.name.get()
                 packageVersion = libs.versions.app.versionName.get()
                 dockName = libs.versions.app.name.get()
-                iconFile.set(rootProject.file("assets/icon.icns"))
+
+                //iconFile.set(rootProject.file("assets/icon.icns"))
+                iconFile.set(rootProject.file("iosApp/iosApp/Assets.xcassets/icon.icns"))
             }
 
             windows {
