@@ -1,31 +1,22 @@
 package dev.upvote.presentation.product
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
-
-import kotlinx.coroutines.flow.update
-
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.*
+import dev.upvote.GlobalState
 import dev.upvote.globalGlobalState
-import dev.upvote.globalMutableStateFlow
 import dev.upvote.presentation.auth.AuthScreen
 import dev.upvote.presentation.auth.signinup.SignInUpViewModel
-import dev.upvote.presentation.error.ShowError
+import kotlinx.coroutines.launch
+import dev.upvote.globalMutableStateFlow
 import dev.upvote.ui.ExpandableSearchView
-
+import kotlinx.coroutines.flow.update
 
 @Composable
 fun ProductScreen(
@@ -34,73 +25,106 @@ fun ProductScreen(
     signInUpViewModel: SignInUpViewModel = viewModel { SignInUpViewModel() },
     modifier: Modifier = Modifier
 ) {
-    val globalGlobalGlobalStateLocal by globalGlobalState.collectAsState()
+    val navController = rememberNavController()
+    val globalState by globalGlobalState.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
 
-    globalGlobalGlobalStateLocal.token?.also { token ->
-        signInUpViewModel.setToken(token)
+    NavHost(navController, startDestination = "home") {
+        composable("home") {
+            ProductHomeScreen(
+                component = component,
+                navController = navController,
+                viewModel = viewModel,
+                signInUpViewModel = signInUpViewModel,
+                globalState = globalState,
+                uiState = uiState,
+                modifier = modifier
+            )
+        }
+        composable("auth") {
+            AuthScreen(
+                onDismissRequest = { navController.popBackStack() }
+            )
+        }
+        composable("product/{barcode}") { backStackEntry ->
+            val barcode = backStackEntry.arguments?.getString("barcode")
+            barcode?.let {
+                viewModel.getProductById(it)
+                ProductDetailScreen(
+                    viewModel = viewModel,
+                    signInUpViewModel = signInUpViewModel,
+                    navController = navController,
+                    uiState = uiState
+                )
+            }
+        }
     }
+}
+
+@Composable
+fun ProductHomeScreen(
+    component: ProductComponent,
+    navController: NavHostController,
+    viewModel: ProductDetailViewModel,
+    signInUpViewModel: SignInUpViewModel,
+    globalState: GlobalState,
+    uiState: ProductDetailState,
+    modifier: Modifier
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     val reset = {
         globalMutableStateFlow.update { it.copy(barcode = null) }
         viewModel.clearError()
     }
 
-    if (globalGlobalGlobalStateLocal.showAuth) {
-        val onDismissRequest = {
-            globalMutableStateFlow.update { it.copy(showAuth = false) }
-        }
-        Dialog(
-            onDismissRequest = onDismissRequest,
-            properties = DialogProperties(
-                dismissOnBackPress = false,
-                dismissOnClickOutside = false
-            )
-        ) {
-            AuthScreen(onDismissRequest = onDismissRequest)
-        }
-    } else
-        Scaffold(
-            topBar = {
-                ExpandableSearchView(
-                    searchDisplay = globalGlobalGlobalStateLocal.barcode ?: "",
-                    onSearchDisplayChanged = {},
-                    onSearchDisplayClosed = {},
+    LaunchedEffect(globalState.lastErrorStr, uiState.lastErrorStr) {
+        val errorMessage = globalState.lastErrorStr ?: uiState.lastErrorStr
+        if (!errorMessage.isNullOrBlank()) {
+            coroutineScope.launch {
+                val result = snackbarHostState.showSnackbar(
+                    message = errorMessage,
+                    actionLabel = "OK"
                 )
-            },
-            modifier = modifier
-        ) { innerPadding ->
-            Column(Modifier.padding(innerPadding)) {
-                if (!globalGlobalGlobalStateLocal.lastErrorStr.isNullOrBlank()) {
-                    ShowError(globalGlobalGlobalStateLocal.lastErrorStr!!, reset)
-                } else if (!uiState.lastErrorStr.isNullOrBlank()) {
-                    ShowError(uiState.lastErrorStr!!, reset)
-                } else if (globalGlobalGlobalStateLocal.barcode != null &&
-                    globalGlobalGlobalStateLocal.barcode!!.length > 3
-                ) {
-                    viewModel.getProductById(globalGlobalGlobalStateLocal.barcode!!)
-                    if (!uiState.productName.isNullOrEmpty()) {
-                        ProductDetailScreen(
-                            viewModel = viewModel,
-                            signInUpViewModel = signInUpViewModel,
-                            uiState = uiState
-                        )
-                    } else if (!globalGlobalGlobalStateLocal.lastErrorStr.isNullOrBlank()) {
-                        ShowError(globalGlobalGlobalStateLocal.lastErrorStr!!, reset)
-                    } else if (!uiState.lastErrorStr.isNullOrBlank()) {
-                        ShowError(uiState.lastErrorStr!!, reset)
-                    } else {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.width(64.dp),
-                            )
-                        }
-                    }
+                if (result == SnackbarResult.ActionPerformed) {
+                    reset()
                 }
             }
         }
+    }
+
+    Scaffold(
+        topBar = {
+            ExpandableSearchView(
+                searchDisplay = globalState.barcode ?: "",
+                onSearchDisplayChanged = {},
+                onSearchDisplayClosed = {}
+            )
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        modifier = modifier
+    ) { innerPadding ->
+        Column(Modifier.padding(innerPadding)) {
+            when {
+                globalState.barcode != null && globalState.barcode!!.length > 3 -> {
+                    navController.navigate("product/${globalState.barcode}")
+                }
+                else -> LoadingScreen()
+            }
+        }
+    }
+}
+
+@Composable
+fun LoadingScreen() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.width(64.dp),
+        )
+    }
 }

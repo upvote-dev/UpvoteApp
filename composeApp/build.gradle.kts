@@ -212,6 +212,8 @@ kotlin {
             implementation(libs.multiplatform.settings)
             implementation(libs.multiplatform.settings.coroutines)
             // implementation(libs.multiplatform.settings.datastore)
+
+            implementation(libs.navigation.compose)
         }
     }
 }

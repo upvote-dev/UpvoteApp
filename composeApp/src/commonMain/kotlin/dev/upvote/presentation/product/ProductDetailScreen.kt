@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import androidx.navigation.NavHostController
 import coil3.compose.SubcomposeAsyncImage
 
 import dev.upvote.api.first_party.NewReview
@@ -40,6 +40,7 @@ import dev.upvote.resources.thumb_up_24px
 fun ProductDetailScreen(
     viewModel: ProductDetailViewModel,
     signInUpViewModel: SignInUpViewModel,
+    navController: NavHostController,
     uiState: ProductDetailState
 ) {
     val authUiState by signInUpViewModel.uiState.collectAsState()
@@ -67,7 +68,7 @@ fun ProductDetailScreen(
         Row(modifier = Modifier.padding(20.dp)) {
             IconButton(
                 onClick = {
-                    println("Clicked upvote, authUiState: $authUiState")
+                    println("Clicked upvote, authUiState: ${authUiState}")
                     if (globalGlobalGlobalStateLocal.token != null) {
                         viewModel.postReview(
                             NewReview(
@@ -80,7 +81,7 @@ fun ProductDetailScreen(
                             )
                         )
                     } else {
-                        globalMutableStateFlow.update { it.copy(showAuth = true) }
+                        navController.navigate("auth")
                     }
                     // TODO: Add counter showing number of likes / dislikes
                 },
