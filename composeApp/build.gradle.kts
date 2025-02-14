@@ -161,6 +161,15 @@ kotlin {
             implementation(libs.play.services.code.scanner)
             implementation(libs.multiplatform.settings.no.arg)
             runtimeOnly(libs.kotlin.reflect)
+
+            implementation(libs.junit)
+            implementation(libs.androidx.ui)
+            implementation(libs.androidx.navigation.testing)
+            implementation(libs.ui.test.manifest)
+            implementation(libs.ui.test.junit4)
+
+            implementation(libs.mockk)
+            implementation(libs.mockk.android)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -212,6 +221,12 @@ kotlin {
             implementation(libs.multiplatform.settings)
             implementation(libs.multiplatform.settings.coroutines)
             // implementation(libs.multiplatform.settings.datastore)
+
+            implementation(libs.navigation.compose)
+        }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation(libs.kotlin.test)
         }
     }
 }
@@ -243,11 +258,12 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionName = libs.versions.app.versionName.get()
         versionCode = libs.versions.app.versionCode.get().toInt()
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE.md,LICENSE-notice.md}"
         }
     }
 
